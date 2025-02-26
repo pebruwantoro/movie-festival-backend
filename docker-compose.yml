@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
+    environment:
+      APP_PORT: ${APP_PORT}
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    platform: linux/x86_64
+    image: postgres:14.1-alpine
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    volumes:
+      - db:/var/lib/postgresql/data
+      # Load database schema from ./database.sql
+      # If you want to reload new database schema, you need to execute
+      # `docker-compose down --volumes` first to remove the volume.
+      - ./migrations/database.sql:/docker-entrypoint-initdb.d/database.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+volumes:
+  db:
+    driver: local
