@@ -11,4 +11,6 @@ type RepositoryInterface interface {
 	UpdateMovie(ctx context.Context, request entities.Movie) (response entities.Movie, err error)
 	GetMovieByUUID(ctx context.Context, uuid string) (response entities.Movie, err error)
 	GetMovieByUUIDs(ctx context.Context, uuids []string) (response []entities.Movie, err error)
+	GetMoviesByFilter(ctx context.Context, filter Filter) (response []entities.Movie, err error)
+	CountTotalMoviesByFilter(ctx context.Context, filter Filter) (total int64, err error)
 }

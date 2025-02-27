@@ -6,6 +6,7 @@ import (
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/users"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/voters"
 	createMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/create"
+	getMoviesByFilter "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmoviesbyfilter"
 	getVotedMoviesByUser "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getvotedmoviesbyuser"
 	unvoteMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/unvote"
 	updateMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/update"
@@ -25,6 +26,7 @@ type Container struct {
 	VoteMovie            voteMovie.Usecase
 	UnVoteMovie          unvoteMovie.Usecase
 	GetVotedMoviesByUser getVotedMoviesByUser.Usecase
+	GetMoviesByFilter    getMoviesByFilter.Usecase
 }
 
 func NewContainer(db *gorm.DB) *Container {
@@ -42,5 +44,6 @@ func NewContainer(db *gorm.DB) *Container {
 		VoteMovie:            *voteMovie.NewUsecase(voteRepo),
 		UnVoteMovie:          *unvoteMovie.NewUsecase(voteRepo),
 		GetVotedMoviesByUser: *getVotedMoviesByUser.NewUsecase(voteRepo, movieRepo),
+		GetMoviesByFilter:    *getMoviesByFilter.NewUsecase(movieRepo),
 	}
 }
