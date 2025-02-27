@@ -5,7 +5,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pebruwantoro/movie-festival-backend/constants"
 	createMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/create"
+	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getvotedmoviesbyuser"
+	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/unvote"
 	updateMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/update"
+	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/vote"
 	createUser "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/create"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/login"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/logout"
@@ -262,4 +265,88 @@ func (s *Server) UploadMovieHandler(c echo.Context) error {
 		Message: "success upload movie",
 		Data:    dstPath,
 	})
+}
+
+func (s *Server) VoteMovieHandler(c echo.Context) error {
+	req := vote.VoteMovieRequest{}
+
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: "error binding the request body",
+		})
+	}
+	req.UserUUID = c.Get("user_uuid").(string)
+	req.CreatedBy = c.Get("user_identifier").(string)
+
+	if err := helper.GValidator.Val.Struct(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error validation request body: %s", err.Error()),
+		})
+	}
+
+	result, err := s.Usecase.VoteMovie.Execute(c.Request().Context(), req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success vote movie",
+		Data:    result,
+	})
+}
+
+func (s *Server) UnVoteMovieHandler(c echo.Context) error {
+	req := unvote.UnVoteMovieRequest{}
+
+	req.UUID = c.Param("uuid")
+	req.UserUUID = c.Get("user_uuid").(string)
+	req.DeletedBy = c.Get("user_identifier").(string)
+
+	if err := helper.GValidator.Val.Struct(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error validation request body: %s", err.Error()),
+		})
+	}
+
+	result, err := s.Usecase.UnVoteMovie.Execute(c.Request().Context(), req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success unvote movie",
+		Data:    result,
+	})
+}
+
+func (s *Server) GetVotesListHandler(c echo.Context) error {
+	req := getvotedmoviesbyuser.GetVotedMovieByUserRequest{
+		UserUUID: c.Get("user_uuid").(string),
+	}
+
+	result, err := s.Usecase.GetVotedMoviesByUser.Execute(c.Request().Context(), req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success get voted movies list",
+		Data:    result.Data,
+	})
+
 }
