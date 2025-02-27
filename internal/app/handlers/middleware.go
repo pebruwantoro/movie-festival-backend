@@ -57,6 +57,7 @@ func AuthenticationMiddleware() echo.MiddlewareFunc {
 
 			c.Set("claims", claims)
 			c.Set("user_identifier", claims.Email)
+			c.Set("user_uuid", claims.UUID)
 
 			return next(c)
 		}
@@ -68,6 +69,19 @@ func AuthorizationAdminMiddleware() echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			claims := c.Get("claims").(*helper.Claims)
 			if claims.Role != constants.ROLE_ADMIN {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
+			}
+
+			return next(c)
+		}
+	}
+}
+
+func AuthorizationUserMiddleware() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			claims := c.Get("claims").(*helper.Claims)
+			if claims.Role != constants.ROLE_USER {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 			}
 

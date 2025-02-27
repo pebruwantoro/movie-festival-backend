@@ -6,15 +6,15 @@ import (
 )
 
 func (u *Usecase) Execute(ctx context.Context, request CreateMovieRequest) (response CreateMovieResponse, err error) {
-	moview := entities.Movie{}
+	movie := entities.Movie{}
 
 	data := request.MapIntoMovie()
 
-	moview, err = u.movieRepo.CreateMovie(ctx, data)
+	movie, err = u.movieRepo.CreateMovie(ctx, data)
 	if err != nil {
 		return
 	}
-	response.UUID = moview.UUID
+	response.UUID = movie.UUID
 
 	return
 }

@@ -59,13 +59,15 @@ CREATE TABLE IF NOT EXISTS artists (
     CONSTRAINT unique_name_artist UNIQUE (name)
 );
 
--- THIS IS SCRIPT FOR CREATING AUDIENCES TABLE
-CREATE TABLE IF NOT EXISTS audiences (
+-- THIS IS SCRIPT FOR CREATING VOTERS TABLE
+CREATE TABLE IF NOT EXISTS voters (
     uuid UUID PRIMARY KEY NOT NULL,
     movie_uuid UUID NOT NULL,
     user_uuid UUID NOT NULL,
     created_at TIMESTAMP,
+    deleted_at TIMESTAMP,
     created_by VARCHAR(255),
+    deleted_by VARCHAR(255),
     FOREIGN KEY (movie_uuid) REFERENCES movies(uuid),
     FOREIGN KEY (user_uuid) REFERENCES users(uuid),
     UNIQUE (movie_uuid, user_uuid)

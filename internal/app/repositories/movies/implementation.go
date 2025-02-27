@@ -39,3 +39,14 @@ func (r *Repository) GetMovieByUUID(ctx context.Context, uuid string) (response 
 
 	return
 }
+
+func (r *Repository) GetMovieByUUIDs(ctx context.Context, uuids []string) (response []entities.Movie, err error) {
+	res := r.Db.WithContext(ctx).
+		Table(entities.MOVIES_TABLE).
+		Where("uuid IN (?) AND deleted_at IS NULL", uuids).
+		Find(&response)
+
+	err = res.Error
+
+	return
+}
