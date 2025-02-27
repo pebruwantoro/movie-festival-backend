@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/pebruwantoro/movie-festival-backend/constants"
 	createMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/create"
+	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmoviesbyfilter"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getvotedmoviesbyuser"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/unvote"
 	updateMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/update"
@@ -18,6 +20,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -348,5 +351,46 @@ func (s *Server) GetVotesListHandler(c echo.Context) error {
 		Message: "success get voted movies list",
 		Data:    result.Data,
 	})
+}
 
+func (s *Server) SearchMoviesByFilterHandler(c echo.Context) error {
+	page, _ := strconv.Atoi(c.QueryParam("page"))
+	perPage, _ := strconv.Atoi(c.QueryParam("per_page"))
+	artists := c.QueryParam("artists")
+	genres := c.QueryParam("genres")
+
+	artistUUIDs := []string{}
+	if artists != "" {
+		json.Unmarshal([]byte(artists), &artistUUIDs)
+	}
+
+	genreUUIDs := []string{}
+	if genres != "" {
+		json.Unmarshal([]byte(genres), &genreUUIDs)
+	}
+
+	req := getmoviesbyfilter.GetMovieByFilterRequest{
+		Title:       c.QueryParam("title"),
+		Description: c.QueryParam("description"),
+		Artists:     artistUUIDs,
+		Genres:      genreUUIDs,
+		Pagination: helper.Pagination{
+			Page:    page,
+			PerPage: perPage,
+		},
+	}
+
+	result, err := s.Usecase.GetMoviesByFilter.Execute(c.Request().Context(), req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success get movies list",
+		Data:    result,
+	})
 }
