@@ -13,7 +13,7 @@ type UpdateMovieRequest struct {
 	Artists     []string `json:"artists" validate:"required"`
 	Genres      []string `json:"genres" validate:"required"`
 	Url         string   `json:"url" validate:"required"`
-	UpdatedBy   string   `json:"created_by"`
+	UpdatedBy   string   `json:"created_by" swaggerignore:"true"`
 }
 
 type UpdateMovieResponse struct {

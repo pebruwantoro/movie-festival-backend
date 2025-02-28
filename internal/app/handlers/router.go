@@ -3,6 +3,8 @@ package handlers
 import (
 	"context"
 	"github.com/labstack/echo/v4"
+	_ "github.com/pebruwantoro/movie-festival-backend/docs"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 type Router struct {
@@ -21,6 +23,8 @@ func NewRouter(ctx context.Context, echo *echo.Echo, server *Server) *Router {
 
 func (r *Router) RegisterRouter() {
 
+	r.echo.GET("/docs/swagger/*", echoSwagger.WrapHandler)
+
 	users := r.echo.Group("users")
 	users.POST("/sign-up", r.server.UserSignUpHandler)
 	users.POST("/sign-up/admin", r.server.AdminSignUpHandler)
@@ -35,7 +39,7 @@ func (r *Router) RegisterRouter() {
 	movies.DELETE("/vote/:uuid", r.server.UnVoteMovieHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/votes/list", r.server.GetVotesListHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/list", r.server.SearchMoviesByFilterHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
-	movies.POST("/track/:uuid", r.server.TrackMovieViewershipHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
+	movies.POST("/track", r.server.TrackMovieViewershipHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/most-viewed", r.server.GetMostViewedMovie, AuthenticationMiddleware(), AuthorizationAdminMiddleware())
 	movies.GET("/genres/most-viewed", r.server.GetMostViewedGenre, AuthenticationMiddleware(), AuthorizationAdminMiddleware())
 }

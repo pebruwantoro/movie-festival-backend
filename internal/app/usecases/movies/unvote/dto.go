@@ -7,7 +7,7 @@ import (
 type UnVoteMovieRequest struct {
 	UUID      string `json:"movie_uuid" validate:"required"`
 	UserUUID  string `json:"user_uuid" validate:"required"`
-	DeletedBy string `json:"deleted_by"`
+	DeletedBy string `json:"deleted_by" swaggerignore:"true"`
 }
 
 type UnVoteMovieResponse struct {

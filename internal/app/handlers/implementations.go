@@ -26,6 +26,15 @@ import (
 	"time"
 )
 
+// Create godoc
+// @Summary     Sign Up Admin
+// @Description  Sign Up Admin
+// @Tags         Admin-users
+// @Accept       json
+// @Produce      json
+// @Param        sign-up body createUser.CreateUserRequest true "Sign Up Admin"
+// @Success 	 200 {object} helper.BaseResponse{data=createUser.CreateUserResponse}
+// @Router       /users/sign-up/admin [post]
 func (s *Server) AdminSignUpHandler(c echo.Context) error {
 	req := createUser.CreateUserRequest{}
 
@@ -60,6 +69,15 @@ func (s *Server) AdminSignUpHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Sign Up Users
+// @Description  Sign Up Users
+// @Tags         Users-Users
+// @Accept       json
+// @Produce      json
+// @Param        sign-up body createUser.CreateUserRequest true "Sign Up Admin"
+// @Success 	 200 {object} helper.BaseResponse{data=createUser.CreateUserResponse}
+// @Router       /users/sign-up [post]
 func (s *Server) UserSignUpHandler(c echo.Context) error {
 	req := createUser.CreateUserRequest{}
 
@@ -94,6 +112,15 @@ func (s *Server) UserSignUpHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Login Users
+// @Description  Login Users
+// @Tags         Users-Users
+// @Accept       json
+// @Produce      json
+// @Param        login body login.LoginRequest true "Login Users"
+// @Success 	 200 {object} helper.BaseResponse{data=login.LoginResponse}
+// @Router       /login [post]
 func (s *Server) LoginUserHandler(c echo.Context) error {
 	req := login.LoginRequest{}
 
@@ -126,6 +153,16 @@ func (s *Server) LoginUserHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Logout Users
+// @Description  Logout Users
+// @Tags         Users-Users
+// @Accept       json
+// @Produce      json
+// @Param        logout body logout.LogoutRequest true "Logut Users"
+// @Success 	 200 {object} helper.BaseResponse{data=logout.LogoutResponse}
+// @Router       /logout [post]
+// @Security JWTBearer
 func (s *Server) LogoutUserHandler(c echo.Context) error {
 	req := logout.LogoutRequest{
 		Token: helper.GetTokenFromHeader(c),
@@ -153,6 +190,16 @@ func (s *Server) LogoutUserHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Create Movie
+// @Description  Create Movie
+// @Tags         Admin-Movie
+// @Accept       json
+// @Produce      json
+// @Param        movie body createMovie.CreateMovieRequest true "Create Movie"
+// @Success 	 200 {object} helper.BaseResponse{data=createMovie.CreateMovieResponse}
+// @Router       /movies [post]
+// @Security JWTBearer
 func (s *Server) CreateMovieHandler(c echo.Context) error {
 	req := createMovie.CreateMovieRequest{}
 
@@ -187,6 +234,17 @@ func (s *Server) CreateMovieHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Update Movie
+// @Description  Update Movie
+// @Tags         Admin-Movie
+// @Accept       json
+// @Produce      json
+// @Param        uuid path string true "Movie UUID"
+// @Param        movie body updateMovie.UpdateMovieRequest true "Update Movie"
+// @Success 	 200 {object} helper.BaseResponse{data=updateMovie.UpdateMovieResponse}
+// @Router       /movies/{uuid} [put]
+// @Security JWTBearer
 func (s *Server) UpdateMovieHandler(c echo.Context) error {
 	req := updateMovie.UpdateMovieRequest{}
 
@@ -221,6 +279,16 @@ func (s *Server) UpdateMovieHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Upload Movie
+// @Description  Upload Movie
+// @Tags         Admin-Movie
+// @Accept       json
+// @Produce      json
+// @Param        movie formData file true "Movie File"
+// @Success 	 200 {object} helper.BaseResponse{data=string}
+// @Router       /movies/upload [post]
+// @Security JWTBearer
 func (s *Server) UploadMovieHandler(c echo.Context) error {
 	file, err := c.FormFile("movie")
 	if err != nil {
@@ -271,6 +339,16 @@ func (s *Server) UploadMovieHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Vote Movie
+// @Description  Vote Movie
+// @Tags         Users-Movie
+// @Accept       json
+// @Produce      json
+// @Param        vote body vote.VoteMovieRequest true "Vote Movie"
+// @Success 	 200 {object} helper.BaseResponse{data=vote.VoteMovieResponse}
+// @Router       /movies/vote [post]
+// @Security JWTBearer
 func (s *Server) VoteMovieHandler(c echo.Context) error {
 	req := vote.VoteMovieRequest{}
 
@@ -305,6 +383,17 @@ func (s *Server) VoteMovieHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Unvote Movie
+// @Description  Unvote Movie
+// @Tags         Users-Movie
+// @Accept       json
+// @Produce      json
+// @Param        uuid path string true "Movie UUID"
+// @Param        vote body unvote.UnVoteMovieRequest true "Unvote Movie"
+// @Success 	 200 {object} helper.BaseResponse{data=unvote.UnVoteMovieResponse}
+// @Router       /movies/:uuid [delete]
+// @Security JWTBearer
 func (s *Server) UnVoteMovieHandler(c echo.Context) error {
 	req := unvote.UnVoteMovieRequest{}
 
@@ -334,6 +423,15 @@ func (s *Server) UnVoteMovieHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Unvote Movie
+// @Description  Unvote Movie
+// @Tags         Users-Movie
+// @Accept       json
+// @Produce      json
+// @Success 	 200 {object} helper.BaseResponse{data=getvotedmoviesbyuser.GetVotedMovieByUserResponse}
+// @Router       /movies/votes/list [get]
+// @Security JWTBearer
 func (s *Server) GetVotesListHandler(c echo.Context) error {
 	req := getvotedmoviesbyuser.GetVotedMovieByUserRequest{
 		UserUUID: c.Get("user_uuid").(string),
@@ -354,6 +452,21 @@ func (s *Server) GetVotesListHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Search Movie
+// @Description  Search Movie
+// @Tags         Users-Movie
+// @Accept       json
+// @Produce      json
+// @Param   	 page query integer false "Page"
+// @Param   	 per_page query integer false "Per Page"
+// @Param   	 title query string false "Title"
+// @Param   	 description query string false "Description"
+// @Param   	 artists query string false "Artists"
+// @Param   	 genres query string false "Genres"
+// @Success 	 200 {object} helper.BaseResponse{data=getmoviesbyfilter.GetMovieByFilterResponse}
+// @Router       /movies/list [get]
+// @Security JWTBearer
 func (s *Server) SearchMoviesByFilterHandler(c echo.Context) error {
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	perPage, _ := strconv.Atoi(c.QueryParam("per_page"))
@@ -396,6 +509,16 @@ func (s *Server) SearchMoviesByFilterHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Track Movie
+// @Description  Track Movie
+// @Tags         Users-Movie
+// @Accept       json
+// @Produce      json
+// @Param        vote body createOrUpdateViewership.CreateOrUpdateViewershipRequest true "Unvote Movie"
+// @Success 	 200 {object} helper.BaseResponse{data=createOrUpdateViewership.CreateOrUpdateViewershipResponse}
+// @Router       /movies/track [post]
+// @Security JWTBearer
 func (s *Server) TrackMovieViewershipHandler(c echo.Context) error {
 	req := createOrUpdateViewership.CreateOrUpdateViewershipRequest{}
 
@@ -431,6 +554,15 @@ func (s *Server) TrackMovieViewershipHandler(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Most Viewed Movie
+// @Description  Most Viewed Movie
+// @Tags         Admin-Movie
+// @Accept       json
+// @Produce      json
+// @Success 	 200 {object} helper.BaseResponse{data=getmostviewedmovie.GetMostViewedMovieRequestResponse}
+// @Router       /movies/most-viewed [get]
+// @Security JWTBearer
 func (s *Server) GetMostViewedMovie(c echo.Context) error {
 	result, err := s.Usecase.GetMostViewedMovie.Execute(c.Request().Context())
 	if err != nil {
@@ -447,6 +579,15 @@ func (s *Server) GetMostViewedMovie(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary     Most Viewed Movie
+// @Description  Most Viewed Movie
+// @Tags         Admin-Movie
+// @Accept       json
+// @Produce      json
+// @Success 	 200 {object} helper.BaseResponse{data=getmostviewedmovie.GetMostViewedMovieRequestResponse}
+// @Router       /movies/most-viewed [get]
+// @Security JWTBearer
 func (s *Server) GetMostViewedGenre(c echo.Context) error {
 	result, err := s.Usecase.GetMostViewedMovieGenre.Execute(c.Request().Context())
 	if err != nil {
