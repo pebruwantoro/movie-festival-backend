@@ -5,10 +5,10 @@ import (
 )
 
 type Usecase struct {
-	movieRepo movies.Repository
+	movieRepo movies.RepositoryInterface
 }
 
-func NewUsecase(movieRepo movies.Repository) *Usecase {
+func NewUsecase(movieRepo movies.RepositoryInterface) *Usecase {
 	return &Usecase{
 		movieRepo: movieRepo,
 	}

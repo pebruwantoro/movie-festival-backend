@@ -5,10 +5,10 @@ import (
 )
 
 type Usecase struct {
-	voteRepo voters.Repository
+	voteRepo voters.RepositoryInterface
 }
 
-func NewUsecase(voteRepo voters.Repository) *Usecase {
+func NewUsecase(voteRepo voters.RepositoryInterface) *Usecase {
 	return &Usecase{
 		voteRepo: voteRepo,
 	}

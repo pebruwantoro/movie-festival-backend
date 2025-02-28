@@ -13,7 +13,7 @@ func (u *Usecase) Execute(ctx context.Context, request CreateUserRequest) (respo
 		return
 	}
 
-	user, err = u.Repository.CreateUser(ctx, data)
+	user, err = u.userRepo.CreateUser(ctx, data)
 
 	response.UUID = user.UUID
 

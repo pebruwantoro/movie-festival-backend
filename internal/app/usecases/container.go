@@ -37,11 +37,11 @@ type Container struct {
 }
 
 func NewContainer(db *gorm.DB) *Container {
-	userRepo := *users.NewRepository(db)
-	tokenRepo := *token.NewRepository(db)
-	movieRepo := *movies.NewRepository(db)
-	voteRepo := *voters.NewRepository(db)
-	viewershipRepo := *viewerships.NewRepository(db)
+	userRepo := users.NewRepository(db)
+	tokenRepo := token.NewRepository(db)
+	movieRepo := movies.NewRepository(db)
+	voteRepo := voters.NewRepository(db)
+	viewershipRepo := viewerships.NewRepository(db)
 
 	return &Container{
 		CreateUserUseacse:        *createUser.NewUsecase(userRepo),

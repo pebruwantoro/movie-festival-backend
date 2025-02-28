@@ -5,11 +5,11 @@ import (
 )
 
 type Usecase struct {
-	Repository users.Repository
+	userRepo users.RepositoryInterface
 }
 
-func NewUsecase(userRepo users.Repository) *Usecase {
+func NewUsecase(userRepo users.RepositoryInterface) *Usecase {
 	return &Usecase{
-		Repository: userRepo,
+		userRepo: userRepo,
 	}
 }

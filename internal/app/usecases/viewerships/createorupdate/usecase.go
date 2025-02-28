@@ -6,11 +6,11 @@ import (
 )
 
 type Usecase struct {
-	viewershipRepo viewerships.Repository
-	movieRepo      movies.Repository
+	viewershipRepo viewerships.RepositoryInterface
+	movieRepo      movies.RepositoryInterface
 }
 
-func NewUsecase(viewershipRepo viewerships.Repository, movieRepo movies.Repository) *Usecase {
+func NewUsecase(viewershipRepo viewerships.RepositoryInterface, movieRepo movies.RepositoryInterface) *Usecase {
 	return &Usecase{
 		viewershipRepo: viewershipRepo,
 		movieRepo:      movieRepo,
