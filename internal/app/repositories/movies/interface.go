@@ -13,4 +13,6 @@ type RepositoryInterface interface {
 	GetMovieByUUIDs(ctx context.Context, uuids []string) (response []entities.Movie, err error)
 	GetMoviesByFilter(ctx context.Context, filter Filter) (response []entities.Movie, err error)
 	CountTotalMoviesByFilter(ctx context.Context, filter Filter) (total int64, err error)
+	GetMostViewedMovie(ctx context.Context) (response entities.MovieWithViewership, err error)
+	GetMostViewedMovieGenre(ctx context.Context) (response entities.MovieGenreWithViewership, err error)
 }

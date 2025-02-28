@@ -36,4 +36,6 @@ func (r *Router) RegisterRouter() {
 	movies.GET("/votes/list", r.server.GetVotesListHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/list", r.server.SearchMoviesByFilterHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.POST("/track/:uuid", r.server.TrackMovieViewershipHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
+	movies.GET("/most-viewed", r.server.GetMostViewedMovie, AuthenticationMiddleware(), AuthorizationAdminMiddleware())
+	movies.GET("/genres/most-viewed", r.server.GetMostViewedGenre, AuthenticationMiddleware(), AuthorizationAdminMiddleware())
 }

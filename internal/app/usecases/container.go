@@ -7,6 +7,8 @@ import (
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/viewerships"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/voters"
 	createMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/create"
+	getMostViewedMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmostviewedmovie"
+	getMostViewedMovieGenre "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmostviewedmoviegenre"
 	getMoviesByFilter "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmoviesbyfilter"
 	getVotedMoviesByUser "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getvotedmoviesbyuser"
 	unvoteMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/unvote"
@@ -30,6 +32,8 @@ type Container struct {
 	GetVotedMoviesByUser     getVotedMoviesByUser.Usecase
 	GetMoviesByFilter        getMoviesByFilter.Usecase
 	CreateOrUpdateViewership createOrUpdateViewership.Usecase
+	GetMostViewedMovie       getMostViewedMovie.Usecase
+	GetMostViewedMovieGenre  getMostViewedMovieGenre.Usecase
 }
 
 func NewContainer(db *gorm.DB) *Container {
@@ -50,5 +54,7 @@ func NewContainer(db *gorm.DB) *Container {
 		GetVotedMoviesByUser:     *getVotedMoviesByUser.NewUsecase(voteRepo, movieRepo),
 		GetMoviesByFilter:        *getMoviesByFilter.NewUsecase(movieRepo),
 		CreateOrUpdateViewership: *createOrUpdateViewership.NewUsecase(viewershipRepo, movieRepo),
+		GetMostViewedMovie:       *getMostViewedMovie.NewUsecase(movieRepo),
+		GetMostViewedMovieGenre:  *getMostViewedMovieGenre.NewUsecase(movieRepo),
 	}
 }
