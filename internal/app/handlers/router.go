@@ -35,4 +35,5 @@ func (r *Router) RegisterRouter() {
 	movies.DELETE("/vote/:uuid", r.server.UnVoteMovieHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/votes/list", r.server.GetVotesListHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 	movies.GET("/list", r.server.SearchMoviesByFilterHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
+	movies.POST("/track/:uuid", r.server.TrackMovieViewershipHandler, AuthenticationMiddleware(), AuthorizationUserMiddleware())
 }

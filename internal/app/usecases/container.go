@@ -4,6 +4,7 @@ import (
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/movies"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/token"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/users"
+	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/viewerships"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/voters"
 	createMovie "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/create"
 	getMoviesByFilter "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/movies/getmoviesbyfilter"
@@ -14,19 +15,21 @@ import (
 	createUser "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/create"
 	loginUser "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/login"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/users/logout"
+	createOrUpdateViewership "github.com/pebruwantoro/movie-festival-backend/internal/app/usecases/viewerships/createorupdate"
 	"gorm.io/gorm"
 )
 
 type Container struct {
-	CreateUserUseacse    createUser.Usecase
-	LoginUserUsecase     loginUser.Usecase
-	LogoutUsecase        logout.Usecase
-	CreateMovie          createMovie.Usecase
-	UpdateMovie          updateMovie.Usecase
-	VoteMovie            voteMovie.Usecase
-	UnVoteMovie          unvoteMovie.Usecase
-	GetVotedMoviesByUser getVotedMoviesByUser.Usecase
-	GetMoviesByFilter    getMoviesByFilter.Usecase
+	CreateUserUseacse        createUser.Usecase
+	LoginUserUsecase         loginUser.Usecase
+	LogoutUsecase            logout.Usecase
+	CreateMovie              createMovie.Usecase
+	UpdateMovie              updateMovie.Usecase
+	VoteMovie                voteMovie.Usecase
+	UnVoteMovie              unvoteMovie.Usecase
+	GetVotedMoviesByUser     getVotedMoviesByUser.Usecase
+	GetMoviesByFilter        getMoviesByFilter.Usecase
+	CreateOrUpdateViewership createOrUpdateViewership.Usecase
 }
 
 func NewContainer(db *gorm.DB) *Container {
@@ -34,16 +37,18 @@ func NewContainer(db *gorm.DB) *Container {
 	tokenRepo := *token.NewRepository(db)
 	movieRepo := *movies.NewRepository(db)
 	voteRepo := *voters.NewRepository(db)
+	viewershipRepo := *viewerships.NewRepository(db)
 
 	return &Container{
-		CreateUserUseacse:    *createUser.NewUsecase(userRepo),
-		LoginUserUsecase:     *loginUser.NewUsecase(userRepo, tokenRepo),
-		LogoutUsecase:        *logout.NewUsecase(tokenRepo),
-		CreateMovie:          *createMovie.NewUsecase(movieRepo),
-		UpdateMovie:          *updateMovie.NewUsecase(movieRepo),
-		VoteMovie:            *voteMovie.NewUsecase(voteRepo),
-		UnVoteMovie:          *unvoteMovie.NewUsecase(voteRepo),
-		GetVotedMoviesByUser: *getVotedMoviesByUser.NewUsecase(voteRepo, movieRepo),
-		GetMoviesByFilter:    *getMoviesByFilter.NewUsecase(movieRepo),
+		CreateUserUseacse:        *createUser.NewUsecase(userRepo),
+		LoginUserUsecase:         *loginUser.NewUsecase(userRepo, tokenRepo),
+		LogoutUsecase:            *logout.NewUsecase(tokenRepo),
+		CreateMovie:              *createMovie.NewUsecase(movieRepo),
+		UpdateMovie:              *updateMovie.NewUsecase(movieRepo),
+		VoteMovie:                *voteMovie.NewUsecase(voteRepo),
+		UnVoteMovie:              *unvoteMovie.NewUsecase(voteRepo),
+		GetVotedMoviesByUser:     *getVotedMoviesByUser.NewUsecase(voteRepo, movieRepo),
+		GetMoviesByFilter:        *getMoviesByFilter.NewUsecase(movieRepo),
+		CreateOrUpdateViewership: *createOrUpdateViewership.NewUsecase(viewershipRepo, movieRepo),
 	}
 }

@@ -73,6 +73,20 @@ CREATE TABLE IF NOT EXISTS voters (
     UNIQUE (movie_uuid, user_uuid)
 );
 
+-- THIS IS SCRIPT FOR CREATING VIEWERSHIPS TABLE
+CREATE TABLE IF NOT EXISTS viewerships (
+   movie_uuid UUID NOT NULL,
+   user_uuid UUID NOT NULL,
+   watching_duration INTEGER NOT NULL,
+   created_at TIMESTAMP,
+   updated_at TIMESTAMP,
+   created_by VARCHAR(255),
+   updated_by VARCHAR(255),
+   FOREIGN KEY (movie_uuid) REFERENCES movies(uuid),
+   FOREIGN KEY (user_uuid) REFERENCES users(uuid),
+   UNIQUE (movie_uuid, user_uuid)
+);
+
 INSERT INTO genres (uuid, name) VALUES
 (gen_random_uuid(), 'Action'),
 (gen_random_uuid(), 'Comedy'),
