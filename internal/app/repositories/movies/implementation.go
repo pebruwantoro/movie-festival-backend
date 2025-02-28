@@ -141,3 +141,38 @@ func (r *Repository) CountTotalMoviesByFilter(ctx context.Context, filter Filter
 
 	return
 }
+
+func (r *Repository) GetMostViewedMovie(ctx context.Context) (response entities.MovieWithViewership, err error) {
+	res := r.Db.WithContext(ctx).
+		Table(entities.VIEWERSHIPS_TABLE + " AS v").
+		Select("m.*, COUNT(v.movie_uuid) AS total_viewed").
+		Joins("JOIN " + entities.MOVIES_TABLE + " AS m ON m.uuid = v.movie_uuid").
+		Where("m.deleted_at IS NULL").
+		Group("m.uuid").
+		Order("total_viewed DESC").
+		Limit(1).
+		Scan(&response)
+
+	err = res.Error
+
+	return
+}
+
+func (r *Repository) GetMostViewedMovieGenre(ctx context.Context) (response entities.MovieGenreWithViewership, err error) {
+	query := `
+		SELECT g.uuid, g.name, COUNT(v.movie_uuid) AS total_viewed
+		FROM viewerships v
+		JOIN movies m ON m.uuid = v.movie_uuid
+		JOIN LATERAL unnest(m.genres) AS genre_uuid ON TRUE
+		JOIN genres g ON g.uuid = genre_uuid
+		WHERE m.deleted_at IS NULL
+		GROUP BY g.uuid, g.name
+		ORDER BY total_viewed DESC
+		LIMIT 1;
+	`
+
+	res := r.Db.WithContext(ctx).Raw(query).Scan(&response)
+	err = res.Error
+
+	return
+}

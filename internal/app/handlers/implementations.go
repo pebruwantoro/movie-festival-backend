@@ -430,3 +430,35 @@ func (s *Server) TrackMovieViewershipHandler(c echo.Context) error {
 		Data:    result,
 	})
 }
+
+func (s *Server) GetMostViewedMovie(c echo.Context) error {
+	result, err := s.Usecase.GetMostViewedMovie.Execute(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success get most viewed movie",
+		Data:    result,
+	})
+}
+
+func (s *Server) GetMostViewedGenre(c echo.Context) error {
+	result, err := s.Usecase.GetMostViewedMovieGenre.Execute(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.BaseResponse{
+			Success: false,
+			Message: fmt.Sprintf("error: %s", err.Error()),
+		})
+	}
+
+	return c.JSON(http.StatusOK, helper.BaseResponse{
+		Success: true,
+		Message: "success get most viewed genre",
+		Data:    result,
+	})
+}

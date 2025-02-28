@@ -3,7 +3,7 @@ package entities
 import "time"
 
 const (
-	VOTES_TABLE = "voters"
+	VOTERS_TABLE = "voters"
 )
 
 type Voters struct {

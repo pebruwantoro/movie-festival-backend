@@ -39,3 +39,13 @@ func (m *Movie) SetDeleted(deletedBy string) {
 	m.DeletedBy = deletedBy
 	m.DeletedAt = time.Now()
 }
+
+type MovieWithViewership struct {
+	Movie
+	TotalViewed int `gorm:"column:total_viewed"`
+}
+
+type MovieGenreWithViewership struct {
+	Genre
+	TotalViewed int `gorm:"column:total_viewed"`
+}
