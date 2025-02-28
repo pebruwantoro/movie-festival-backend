@@ -8,7 +8,7 @@ import (
 type VoteMovieRequest struct {
 	MovieUUID string `json:"movie_uuid" validate:"required"`
 	UserUUID  string `json:"user_uuid" validate:"required"`
-	CreatedBy string `json:"created_by"`
+	CreatedBy string `json:"created_by" swaggerignore:"true"`
 }
 
 type VoteMovieResponse struct {

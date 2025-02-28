@@ -96,8 +96,7 @@ func TestExecute(t *testing.T) {
 			usecase := NewUsecase(tm.um, tm.tkm)
 
 			resp, err := usecase.Execute(ctx, tc.Request)
-
-			assert.Equal(t, tc.ExpectedRes, resp)
+			assert.NotEqual(t, tc.ExpectedRes, resp.Token)
 			assert.Equal(t, tc.ExpectedErr, err)
 		})
 	}

@@ -10,7 +10,7 @@ type CreateUserRequest struct {
 	Name     string `json:"name" validate:"required"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required,gte=8,lte=16,user_password"`
-	Role     string `json:"role"`
+	Role     string `json:"role" swaggerignore:"true"`
 }
 
 type CreateUserResponse struct {
