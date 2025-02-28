@@ -3,6 +3,7 @@ package getvotedmoviesbyuser
 import (
 	"context"
 	"github.com/pebruwantoro/movie-festival-backend/internal/app/entities"
+	"slices"
 )
 
 func (u *Usecase) Execute(ctx context.Context, request GetVotedMovieByUserRequest) (response GetVotedMovieByUserResponse, err error) {
@@ -18,7 +19,9 @@ func (u *Usecase) Execute(ctx context.Context, request GetVotedMovieByUserReques
 	if len(votes) > 0 {
 		movieUUIDs := []string{}
 		for _, vote := range votes {
-			movieUUIDs = append(movieUUIDs, vote.MovieUUID)
+			if !slices.Contains(movieUUIDs, vote.MovieUUID) {
+				movieUUIDs = append(movieUUIDs, vote.MovieUUID)
+			}
 		}
 
 		movies, err = u.movieRepo.GetMovieByUUIDs(ctx, movieUUIDs)
