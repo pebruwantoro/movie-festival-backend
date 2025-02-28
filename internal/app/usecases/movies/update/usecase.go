@@ -3,10 +3,10 @@ package update
 import "github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/movies"
 
 type Usecase struct {
-	movieRepo movies.Repository
+	movieRepo movies.RepositoryInterface
 }
 
-func NewUsecase(movieRepo movies.Repository) *Usecase {
+func NewUsecase(movieRepo movies.RepositoryInterface) *Usecase {
 	return &Usecase{
 		movieRepo: movieRepo,
 	}

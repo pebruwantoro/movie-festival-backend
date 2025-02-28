@@ -3,10 +3,10 @@ package unvote
 import "github.com/pebruwantoro/movie-festival-backend/internal/app/repositories/voters"
 
 type Usecase struct {
-	voteRepo voters.Repository
+	voteRepo voters.RepositoryInterface
 }
 
-func NewUsecase(voteRepo voters.Repository) *Usecase {
+func NewUsecase(voteRepo voters.RepositoryInterface) *Usecase {
 	return &Usecase{
 		voteRepo: voteRepo,
 	}

@@ -6,11 +6,11 @@ import (
 )
 
 type Usecase struct {
-	userRepo  users.Repository
-	tokenRepo token.Repository
+	userRepo  users.RepositoryInterface
+	tokenRepo token.RepositoryInterface
 }
 
-func NewUsecase(userRepo users.Repository, tokenRepo token.Repository) *Usecase {
+func NewUsecase(userRepo users.RepositoryInterface, tokenRepo token.RepositoryInterface) *Usecase {
 	return &Usecase{
 		userRepo:  userRepo,
 		tokenRepo: tokenRepo,
