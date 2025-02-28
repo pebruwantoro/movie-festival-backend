@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Build, and Deploy to GCP
+    name: Code Quality Scanner
     runs-on: ubuntu-latest
 
     steps:
