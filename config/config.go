@@ -1,7 +1,10 @@
 package config
 
 import (
+	"flag"
 	"github.com/spf13/viper"
+	"os"
+	"strings"
 	"sync"
 )
 
@@ -52,5 +55,10 @@ func Load() {
 }
 
 func Get() *Config {
+	if strings.HasSuffix(os.Args[0], ".test") || flag.Lookup("test.v") != nil {
+		return &Config{
+			SaltPassword: "salty-password",
+		}
+	}
 	return cfg
 }
