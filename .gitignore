@@ -91,6 +91,8 @@ fabric.properties
 
 .env
 
-docs/*
+docs/docs.go
+docs/swagger.json
+docs/swagger.yaml
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Go,JetBrains
